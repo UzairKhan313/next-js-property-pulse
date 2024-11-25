@@ -1,3 +1,5 @@
+import Hero from "@/components/Hero";
+import InfoBoxes from "@/components/InfoBoxes";
 import React from "react";
 
 export const metadata = {
@@ -6,9 +8,10 @@ export const metadata = {
 
 const HomePage = () => {
   return (
-    <div>
-      <h1 className="text-3xl">Wellcome</h1>
-    </div>
+    <>
+      <Hero />
+      <InfoBoxes />
+    </>
   );
 };
 
