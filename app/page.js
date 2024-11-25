@@ -5,7 +5,11 @@ export const metadata = {
 };
 
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <div>
+      <h1 className="text-3xl">Wellcome</h1>
+    </div>
+  );
 };
 
 export default HomePage;
