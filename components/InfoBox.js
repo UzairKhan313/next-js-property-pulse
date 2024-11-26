@@ -6,7 +6,6 @@ const InfoBox = ({
   bgColor = "bg-gray-100",
   textColor = "text-gray-800",
   buttonInfo,
-  children,
   description,
 }) => {
   return (
