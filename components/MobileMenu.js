@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { FaGoogle } from "react-icons/fa";
 
-const MobileMenu = ({ pathName, isLoggedIn }) => {
+const MobileMenu = ({ pathName, session }) => {
   return (
     <div>
       <div className="space-y-1 px-2 pb-3 pt-2">
@@ -22,7 +21,7 @@ const MobileMenu = ({ pathName, isLoggedIn }) => {
         >
           Properties
         </Link>
-        {isLoggedIn && (
+        {session && (
           <Link
             href="/properties/add"
             className={`${
@@ -32,10 +31,11 @@ const MobileMenu = ({ pathName, isLoggedIn }) => {
             Add Property
           </Link>
         )}
-        {!isLoggedIn && (
+        {!session && (
           <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
-            <FaGoogle className="text-white mr-2" />
-            <span>Login</span>
+            <Link href="/login">
+              <span>Login or Register</span>
+            </Link>
           </button>
         )}
       </div>

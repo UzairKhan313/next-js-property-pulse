@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const ProfileMenu = () => {
+const ProfileMenu = ({ signOut, setIsProfileMenuOpen }) => {
   return (
     <div
       id="user-menu"
@@ -16,6 +16,9 @@ const ProfileMenu = () => {
         role="menuitem"
         tabIndex="-1"
         id="user-menu-item-0"
+        onClick={() => {
+          setIsProfileMenuOpen(false);
+        }}
       >
         Your Profile
       </Link>
@@ -25,6 +28,9 @@ const ProfileMenu = () => {
         role="menuitem"
         tabIndex="-1"
         id="user-menu-item-2"
+        onClick={() => {
+          setIsProfileMenuOpen(false);
+        }}
       >
         Saved Properties
       </Link>
@@ -33,6 +39,10 @@ const ProfileMenu = () => {
         role="menuitem"
         tabIndex="-1"
         id="user-menu-item-2"
+        onClick={() => {
+          setIsProfileMenuOpen(false);
+          signOut();
+        }}
       >
         Sign Out
       </button>

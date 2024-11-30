@@ -1,8 +1,19 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import { getProviders, signIn } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
 import { FaGoogle } from "react-icons/fa";
 
 const LoginPage = () => {
+  const [providers, setProviders] = useState(false);
+  useEffect(() => {
+    const setAuthProvider = async () => {
+      const res = await getProviders();
+      setProviders(res);
+    };
+    setAuthProvider();
+  }, []);
+
   return (
     <section className="bg-blue-50 min-h-screen flex-grow">
       <div className="container m-auto max-w-lg py-24">
@@ -10,12 +21,17 @@ const LoginPage = () => {
           <form>
             <h2 className="text-3xl text-center font-semibold mb-6">Login</h2>
             <div className="mb-4">
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
-                type="submit"
-              >
-                <FaGoogle className="text-white mr-2" /> Login with Google
-              </button>
+              {providers &&
+                Object.values(providers).map((provider, index) => (
+                  <button
+                    key={index}
+                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
+                    type="button"
+                    onClick={() => signIn(provider.id)}
+                  >
+                    <FaGoogle className="text-white mr-2" /> Login with Google
+                  </button>
+                ))}
             </div>
 
             <div className="my-6 font-semibold text-center">
