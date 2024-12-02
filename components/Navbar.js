@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -162,7 +162,7 @@ const Navbar = () => {
                 {isProfileMenuOpen && (
                   <ProfileMenu
                     signOut={signOut}
-                    setIsProfileMenuOpen={setIsMobileMenuOpen}
+                    setIsProfileMenuOpen={setIsProfileMenuOpen}
                   />
                 )}
               </div>
