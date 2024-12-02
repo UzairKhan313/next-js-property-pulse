@@ -21,10 +21,15 @@ const PropertyCard = ({ property }) => {
       return `${rates.nightly.toLocaleString()}/night`;
     }
   };
+
+  // const imagePath = property.images[0].startsWith("https")
+  //   ? property.images[0]
+  //   : `/images/properties/${property.images[0]}`;
+
   return (
     <div className="rounded-xl shadow-md relative">
       <Image
-        src={`/images/properties/${property.images[0]}`}
+        src={property.images[0]}
         alt={property.name}
         height={500}
         width={500}

@@ -3,6 +3,7 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
 import PropertyDetails from "@/components/PropertyDetails";
 import PropertyDetailsHeaderImage from "@/components/PropertyDetailsHeaderImage";
+import PropertyImageGallery from "@/components/PropertyImagesGallery";
 import { fetchSingleProperty } from "@/utils/request";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -149,6 +150,7 @@ const PropertyPage = () => {
               </div>
             </div>
           </section>
+          <PropertyImageGallery images={property.images} />
         </>
       )}
     </>

@@ -17,7 +17,9 @@ export const fetchSingleProperty = async (id) => {
   try {
     // Handle the case where the domain is not available yet.
     if (!apiDomain) return null;
-    const res = await fetch(`${apiDomain}/properties/${id}`);
+    const res = await fetch(`${apiDomain}/properties/${id}`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) throw new Error("Oops! Faild to Fetch Single property.");
     return res.json();
