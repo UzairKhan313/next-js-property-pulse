@@ -1,6 +1,8 @@
+import React from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { toast } from "react-toastify";
 
 const UserListing = ({ property, onDeleteProperty }) => {
   const deleteListingHandler = async (id) => {
@@ -16,13 +18,13 @@ const UserListing = ({ property, onDeleteProperty }) => {
       if (res.status === 200) {
         // Remove the propety form the state.
         onDeleteProperty(id);
-        alert("Property deleted successfully.");
+        toast.success("Property deleted successfully.");
       } else {
-        alert("Failed to delete property.");
+        toast.error("Failed to delete property.");
       }
     } catch (error) {
       console.log(error);
-      alert("Failed to delete property.");
+      toast.error("Failed to delete property.");
     }
   };
   return (
