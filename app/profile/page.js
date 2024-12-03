@@ -1,15 +1,54 @@
 "use client";
+import { useEffect, useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import ProfileDefault from "@/assets/images/profile.png";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import UserListing from "@/components/UserListing";
 
 const ProfilePage = () => {
   const { data: session } = useSession();
   const profileImage = session?.user.image;
   const name = session?.user.name;
   const email = session?.user.email;
+
+  const [properties, setProperties] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const onDeleteProperty = (pid) => {
+    const updatedProperties = properties.filter(
+      (property) => property._id !== pid
+    );
+    setProperties(updatedProperties);
+  };
+
+  useEffect(() => {
+    const fetchUserProperties = async (userId) => {
+      if (!userId) {
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/properties/user/${userId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProperties(data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    // Fetch User Properties only when there is a session.
+    if (session?.user?.id) {
+      fetchUserProperties(session.user.id);
+    }
+  }, [session]);
+
   return (
     <section className="bg-blue-50">
       <div className="max-w-7xl m-auto py-24">
@@ -36,60 +75,20 @@ const ProfilePage = () => {
 
             <div className="md:w-3/4 md:pl-4">
               <h2 className="text-xl font-semibold mb-4">Your Listings</h2>
-              <div className="mb-10">
-                <a href="/property.html">
-                  <img
-                    className="h-32 w-full rounded-md object-cover"
-                    src="/images/properties/a1.jpg"
-                    alt="Property 1"
+              {!isLoading && properties.length === 0 && (
+                <p>You have no property Listings yet.</p>
+              )}
+              {isLoading ? (
+                <LoadingSpinner loading={isLoading} />
+              ) : (
+                properties.map((property) => (
+                  <UserListing
+                    key={property._id}
+                    property={property}
+                    onDeleteProperty={onDeleteProperty}
                   />
-                </a>
-                <div className="mt-2">
-                  <p className="text-lg font-semibold">Property Title 1</p>
-                  <p className="text-gray-600">Address: 123 Main St</p>
-                </div>
-                <div className="mt-2">
-                  <a
-                    href="/add-property.html"
-                    className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600"
-                  >
-                    Edit
-                  </a>
-                  <button
-                    className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
-                    type="button"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-              <div className="mb-10">
-                <a href="/property.html">
-                  <img
-                    className="h-32 w-full rounded-md object-cover"
-                    src="/images/properties/b1.jpg"
-                    alt="Property 2"
-                  />
-                </a>
-                <div className="mt-2">
-                  <p className="text-lg font-semibold">Property Title 2</p>
-                  <p className="text-gray-600">Address: 456 Elm St</p>
-                </div>
-                <div className="mt-2">
-                  <a
-                    href="/add-property.html"
-                    className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600"
-                  >
-                    Edit
-                  </a>
-                  <button
-                    className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
-                    type="button"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+                ))
+              )}
             </div>
           </div>
         </div>

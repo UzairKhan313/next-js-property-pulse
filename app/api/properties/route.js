@@ -77,8 +77,6 @@ export const POST = async (req) => {
       const imageBase64 = imageData.toString("base64");
 
       // Make request to upload image to cloudinary.
-      console.log(cloudinary);
-
       const result = await cloudinary.uploader.upload(
         `data:image/png;base64,${imageBase64}`,
         {
