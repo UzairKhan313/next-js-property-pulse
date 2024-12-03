@@ -101,7 +101,27 @@ const PropertyEditForm = () => {
     fetchPropertyData();
   }, [id]);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData(event.target);
+      const res = await fetch(`/api/properties/${id}`, {
+        method: "PUT",
+        body: formData,
+      });
+      if (res.status === 200) {
+        router.push(`/properties/${id}`);
+      } else if (res.status === 401 || res.status === 403) {
+        toast.error("Permission Denied.");
+      } else {
+        toast.error("Something went wrong.");
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Something went wrong.");
+    }
+  };
   return isLoading ? (
     <LoadingSpinner loading={isLoading} />
   ) : (
