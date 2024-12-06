@@ -1,7 +1,50 @@
 import connectdb from "@/config/database";
 import Message from "@/Models/message";
 import { getSessionUser } from "@/utils/session";
+
 export const dynamic = "force-dynamic";
+
+// GET /api/messages
+export const GET = async (req) => {
+  try {
+    connectdb();
+
+    // extracting user id from the session.
+    const sessionUser = await getSessionUser();
+
+    if (!sessionUser || !sessionUser.userId) {
+      return new Response(
+        JSON.stringify({ message: "You must be logged in to sent message." }),
+        {
+          status: 401,
+        }
+      );
+    }
+    const { userId } = sessionUser;
+
+    // Get read Messages.
+    const readMessages = await Message.find({ recipient: userId, read: true })
+      .sort({ createdAt: -1 })
+      .populate("sender", "name")
+      .populate("property", "name");
+
+    // get unread messages and sort it.
+    const unReadMessages = await Message.find({
+      recipient: userId,
+      read: false,
+    })
+      .sort({ createdAt: -1 })
+      .populate("sender", "name")
+      .populate("property", "name");
+
+    const messages = [...unReadMessages, ...readMessages];
+    // Sending response.
+    return new Response(JSON.stringify({ messages }), { status: 200 });
+  } catch (error) {
+    console.log("Faild to fetch Message", error);
+    return new Response("Faild to fetch Message", { status: 500 });
+  }
+};
 
 // POST /api/messages.
 export const POST = async (req) => {
