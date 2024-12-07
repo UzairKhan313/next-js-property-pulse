@@ -5,8 +5,8 @@ import Link from "next/link";
 import { fetchProperties } from "@/utils/request";
 
 const RecentProperties = async () => {
-  const properties = await fetchProperties();
-  const recentProperites = properties
+  const data = await fetchProperties();
+  const recentProperites = data.properties
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 3);
 

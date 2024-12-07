@@ -8,8 +8,27 @@ import cloudinary from "@/config/cloudinary";
 export const GET = async (req) => {
   try {
     connectdb();
-    const properites = await Property.find({}); // All Properties.
-    return new Response(JSON.stringify(properites), { status: 200 });
+    const { searchParams } = new URL(req.url);
+    const page = searchParams.get("page") || 1; // page number, Default is 1.
+    const pageSize = searchParams.get("pageSize") || 6; // Number of Properites page will display, Default is 6 properties per page.
+    console.log(page, pageSize);
+
+    // Properties which should be skip.
+    const skipProperties = (page - 1) * pageSize;
+
+    // Total Properties in the database.
+    const totalProperties = await Property.countDocuments();
+
+    const properties = await Property.find({})
+      .skip(skipProperties)
+      .limit(pageSize); // All Properties excluding the previose page properties and limit to the page size.
+
+    const result = {
+      totalProperties,
+      properties,
+      currentPage: page,
+    };
+    return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response("Something went wrong!.", { status: 500 });
