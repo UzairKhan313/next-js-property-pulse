@@ -43,7 +43,7 @@ A full-stack real estate application built with **Next.js**, **NextAuth**, and *
 
    ```bash
    git clone https://github.com/UzairKhan313/next-js-property-pulse.git
-   cd mern-instagram-clone
+   cd next-js-propety-pulse
    ```
 
 2. **Install the Dependecies r**
