@@ -2,6 +2,7 @@ import connectdb from "@/config/database";
 import User from "@/Models/user";
 import GoogleProvider from "next-auth/providers/google";
 import { generatePassword } from "./password";
+
 export const authOptions = {
   providers: [
     GoogleProvider({
